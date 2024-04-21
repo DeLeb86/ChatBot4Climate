@@ -1,0 +1,17 @@
+attrs
+scrapy
+pandas
+protego
+tqdm
+unidecode
+scikit-learn
+spacy
+langdetect
+argparse
+numpy==1.19.3
+nltk
+pyvirtualdisplay
+progressbar
+xvfbwrapper
+PyPDF2
+bs4
