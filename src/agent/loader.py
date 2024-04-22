@@ -35,7 +35,7 @@ if __name__ == '__main__':
     loader = JSONLoader(
         file_path=DATA_PATH,
         jq_schema='.',
-        content_key='content',
+        content_key='total',
         metadata_func=metadata_func,
         json_lines=True
     )

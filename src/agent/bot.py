@@ -1,14 +1,14 @@
 from langchain_community.vectorstores.pgvector import PGVector,DistanceStrategy
 from langchain_community.embeddings import HuggingFaceEmbeddings
-
-from langchain_community.llms import HuggingFacePipeline
-from langchain.runnables import RunnablePassthrough
+from langchain.chat_models import HuggingFacePipeline
+#from langchain_community.llms import HuggingFacePipeline
+from langchain.schema.runnable import RunnablePassthrough
 from langchain.prompts import PromptTemplate
-from langchain_community.llms import LLMChain
+from langchain.chains import LLMChain
 from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
 from transformers import AutoTokenizer,AutoConfig, AutoModelForCausalLM,pipeline
 
-model_name='mistralai/Mixtral-8x7B-v0.1'
+model_name=''
 
 model_config = AutoConfig.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -53,7 +53,7 @@ text_generation_pipeline = pipeline(
     tokenizer=tokenizer,
     task="text-generation",
     temperature=0.2,
-    repetition_penalty=1.1,
+    repetition_penalty=1.1,                 
     return_full_text=True,
     max_new_tokens=300,
 )

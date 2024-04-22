@@ -1,3 +1,2 @@
 #!/bin/sh
-cd src/agent/
-uvicorn query_app:app --reload & cd -;
+streamlit run src/agent/query_app.py

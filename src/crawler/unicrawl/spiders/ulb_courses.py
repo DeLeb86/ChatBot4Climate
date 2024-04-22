@@ -12,7 +12,8 @@ from settings import YEAR, CRAWLING_OUTPUT_FOLDER
 BASE_URL = 'https://www.ulb.be/fr/programme/{}'
 PROG_DATA_PATH = Path(__file__).parent.absolute().joinpath(
     f'../../../../{CRAWLING_OUTPUT_FOLDER}ulb_programs_{YEAR}.json')
-
+COURSE_DATA_PATH = Path(__file__).parent.absolute().joinpath(
+    f'../../../../{CRAWLING_OUTPUT_FOLDER}ulb_courses_{YEAR}.json')
 LANGUAGE_DICT = {
     "français": "fr",
     "anglais": "en",
@@ -44,8 +45,7 @@ class ULBCourseSpider(scrapy.Spider, ABC):
 
     name = 'ulb-courses'
     custom_settings = {
-        'FEED_URI': Path(__file__).parent.absolute().joinpath(
-            f'../../../../{CRAWLING_OUTPUT_FOLDER}ulb_courses_{YEAR}.json').as_uri()
+        'FEED_URI': COURSE_DATA_PATH.as_uri()
     }
 
     def start_requests(self):
@@ -107,3 +107,14 @@ class ULBCourseSpider(scrapy.Spider, ABC):
             "activity": activity,
             "other": ''
         }
+        
+        @classmethod
+        def from_crawler(cls, crawler, *args, **kwargs):
+            spider = super().from_crawler(crawler, *args, **kwargs)
+            crawler.signals.connect(spider.spider_closed, signal=signals.spider_closed)
+            return spider
+
+        def spider_closed(self, spider):
+            df = pd.read_json(COURSE_DATA_PATH.as_posix(), lines=True)
+            df["total"] = df["name"]+"\n"+df["content"]
+            df.to_json(COURSE_DATA_PATH, orient='records', lines=True)
