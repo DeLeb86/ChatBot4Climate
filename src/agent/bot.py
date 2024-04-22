@@ -14,13 +14,6 @@ model_config = AutoConfig.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
-text = "Bonjour, je m'appelle"
-inputs = tokenizer(text, return_tensors="pt")
-
-outputs = model.generate(**inputs, max_new_tokens=20)
-print(tokenizer.decode(outputs[0], skip_special_tokens=True))
-
-
 connection = "postgresql+psycopg://dba:dba@localhost:6024/chatbot"
 collection_name = "courses"
 
